@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: bms
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      # 连接池配置
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/bms?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&autoReconnectForPools=true&failOverReadOnly=false&rewriteBatchedStatements=true&allowMultiQueries=true&useSSL=false
+      username: root
+      password: macbookpro
+      # 初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时
+      initial-size: 5
+      # 最大连接池数量
+      max-active: 1000
+      # 最小连接池数量
+      min-idle: 50
+      # 获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。
+      max-wait: 6000
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      pool-prepared-statements: false
+      # 用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会起作用。
+      validation-query: SELECT 'x'
+      # 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      test-while-idle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-borrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+      test-on-return: false
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      maxOpenPreparedStatements: 0
+      # 有两个含义：1) Destroy线程会检测连接的间隔时间2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明
+      time-between-eviction-runs-millis: 9000
+      # 连接保持空闲而不被驱逐的最小时间
+      min-evictable-idle-time-millis: 3000
+
+#mybaits-plus配置，修改主键类型，mapper.xml、type 别名等
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  typeAliasesPackage: com.rs.app.manager.domain.entity
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value:  0
+      id-type: AUTO
+      field-strategy: NOT_NULL
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+
